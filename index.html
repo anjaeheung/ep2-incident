@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>사건 발생 — 제2편 · 달의 장</title>
+<style>
+  :root{--bg:#0c0e13;--panel:#151823;--line:#2a3040;--ink:#e9ecf2;--muted:#8b93a6;
+    --mina:#5fb4ff;--kaguya:#ff9ecf;--toki:#ff6b6b;--gold:#ffd54a;}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:radial-gradient(130% 100% at 50% 0%,#161b27 0%,var(--bg) 60%);color:var(--ink);
+    font-family:"Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    display:flex;flex-direction:column;align-items:center;height:100%;overflow:hidden;}
+  #top{width:100%;max-width:720px;padding:12px 18px 8px;text-align:center}
+  #top h1{margin:0;font-size:15px;letter-spacing:3px;color:#dfe3ea;font-weight:700}
+  #top .sub{font-size:11.5px;color:var(--muted);margin-top:3px;letter-spacing:2px}
+  #stage{width:100%;max-width:720px;flex:1;display:flex;flex-direction:column;min-height:0;padding:0 14px 10px;cursor:pointer}
+  #log{flex:1;overflow-y:auto;padding:10px 4px 6px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth}
+  .row{display:flex}.row.L{justify-content:flex-start}.row.R{justify-content:flex-end}.row.C{justify-content:center}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .narr{align-self:stretch;padding:4px 6px 4px 16px;border-left:3px solid rgba(139,147,166,.5);
+        color:#c6cdda;font-style:italic;line-height:1.78;font-size:15px;white-space:pre-wrap;animation:rise .22s ease}
+  .bubble{position:relative;max-width:82%;background:var(--panel);border:1px solid var(--line);
+          border-left:4px solid var(--line);border-radius:12px;padding:10px 14px;animation:rise .22s ease}
+  .row.R .bubble{border-left:1px solid var(--line);border-right:4px solid var(--line)}
+  .bubble .name{font-size:12px;font-weight:800;margin-bottom:3px}
+  .bubble .txt{font-size:15px;line-height:1.65;color:#eef1f6;white-space:pre-wrap}
+  .rules{align-self:stretch;background:#141a26;border:1px solid #2e3a50;border-radius:12px;padding:13px 16px;
+         line-height:1.7;font-size:13px;color:#cfd6e4;white-space:pre-wrap;animation:rise .22s ease}
+  .rules .rtag{display:block;font-size:12.5px;font-weight:800;color:var(--gold);margin-bottom:6px;letter-spacing:1px}
+  #hint{height:22px;text-align:center;color:var(--muted);font-size:12px;padding-top:2px;user-select:none;animation:pulse 1.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.4}50%{opacity:.9}}
+</style>
+</head>
+<body>
+  <div id="top"><h1>사건 발생</h1><div class="sub">제 2 편 · 달의 장</div></div>
+  <div id="stage"><div id="log"></div><div id="hint">▼ 클릭하여 계속</div></div>
+<script>
+const STORY=[
+ {rules:{t:"📖 낭독 안내", b:"· 나레이션(기울임 글씨)은 츠키시로 카구야 역이 낭독해 주세요.\n· 대사는 각 인물이 읽어 주세요."}},
+ {n:"내가 『아키즈키 예술극장』에 들어서자, 회장은 소란의 소용돌이에 휩싸여 있었다."},
+ {n:"사람들의 움직임이 흐트러지고, 누군가가 소리치고, 누군가가 울고 있었다. 귀에 거슬리는 노이즈가 되어 울리는 그 웅성거림은, 단순한 흥분이나 환호성이 아니다."},
+ {n:"……공포와 혼란을 내포하고 있었다. 무대 위에서, 무언가가 일어났다. 그것은, 나의 《초 감각》이 즉시 알려왔다."},
+ {n:"누군가가 쓰러지고, 그리고, 가슴에 무언가가 꽂혀 있다. 그것은, 시대극에서 사용했을 칼. 본래라면 모조품이어야 할 그것이, 사람을 꿰뚫었다는 것이 『보였다』."},
+ {s:"츠키시로 카구야", t:"아아, 역시 늦고 말았구나."},
+ {n:"조금 아쉬운 마음과, 아주 약간의 예감이 적중한 것에 대한 기분 나쁜 만족감을 품으며, 나는 관객들의 파도 속으로 발을 들여놓았다."},
+ {n:"직원의 공연 중지 연락과 피난 유도가 마이크 너머로 들려온다. 비명과 고함이 오가는 통로를, 나는 거슬러 올라가며 나아갔다."},
+ {n:"인파에 밀려, 어깨가 누군가와 부딪친다. 발을 밟힌다. 하지만 나는 멈춰 서지 않는다. 그저, 우아하게, 늠름하게, 앞으로."},
+ {n:"스테이지 위. 원형 조명에 비춰진 세계는 주위의 소란을 차단하고, 정적의 영역을 만들어내고 있는가 싶었다. 피 냄새가 코를 찌른다."},
+ {n:"피해자의 숨소리는 들리지 않는다. 미나토도 그곳에 있었다. 무릎과 양손을 바닥에 짚고, 힘없이 고개를 떨구고 있다."},
+ {n:"그리고, 그녀의 앞에서, 떡하니 버티고 선 남자. 자세가 당당하다는 것을 상상할 수 있었다. 시선은, 똑바로 미나토를 향해 있다. 마치, 승자가 패자를 내려다보는 듯한…… 그런 공기."},
+ {n:"나는 그의 얼굴을 본 것은 아니다. 하지만, 거기에 떠올라 있을 일그러진 미소를 상상하는 것은 어렵지 않았다."},
+ {n:"그 남자의 옆에 있던 다른 인물은, 내가 자신의 존재를 깨닫고, 다수의 시선을 보내온다. 아무래도 우리는 렌즈 너머로 감시당하며, 사건은 극장 밖으로도 적나라하게 드러나 있는 듯하다."},
+ {s:"츠키시로 카구야", t:"라이브 방송으로 전부 중계되고 있는 거군요."},
+ {s:"카자마 미나토", t:"카…… 카구야 씨……! 와 주셨군요……!"},
+ {n:"목소리가 떨리고 있었다. 한숨을 내쉬며, 나는 미나토의 등 뒤에 선다."},
+ {s:"카자마 미나토", t:"도와주세요…… 저, 저로서는 안 돼요. 이 사건…… 저희들로서는, 절대로 밝혀낼 수 없다고요……!"},
+ {n:"미나토는 매달리듯이 호소했다. 목소리는 눈물에 젖어 있었다. 하지만 나는, 살며시 입가에 미소를 띠고 말했다."},
+ {s:"츠키시로 카구야", t:"저희……라고요? ……이건, 당신이 떠맡은 의뢰잖아요?"},
+ {n:"그 한마디가, 그녀의 마음을 가차 없이 때린 것을 알 수 있다. 미나토는 할 말을 잃고, 그저 입을 다문 채 고개를 숙였다. 하지만, 그걸로 됐다. 지금부터가 그녀의 일이니까."},
+ {n:"나는 남자를 향해 돌아선다. 내 이름을 듣고, 그 시선이 명확하게 나를 향하고 있음을 알 수 있었다. 남자는"},
+ {s:"???", t:"당신이 누군지 알고 있습니다. 츠키시로 카구야 씨."},
+ {n:"라고 말하며, 몹시 기뻐하고 있다. ……그때였다. 날카로운 목소리가 극장의 공기를 갈랐다."},
+ {n:"제복 입은 발소리. 무전기 소리. 현장에 도착한 경찰관들이, 단숨에 무대 위로 들이닥친다. 남자의 이름이 불렸다."},
+ {n:"[토키토 센리]…… 이 사건의 중심에 있는 남자의 이름이다. 경찰관은 남자에게 임의동행을 요구하지만, 남자는 미소를 띠며 거절한다."},
+ {s:"토키토 센리", t:"싫습니다. 라이브 방송을 보면 알 겁니다. 그 라이브 영상이 제 알리바이를 증명하고 있거든요. 무죄라는 거죠."},
+ {s:"토키토 센리", t:"하지만…… 이 자리에서도 떠나지 않을 겁니다. 적어도, 30분은요."},
+ {n:"그 말을 증명하듯이, 남자는 단상에서 내려와, 객석의 맨 앞자리에 털썩하고 앉았다."},
+ {n:"팔짱을 끼면서, 우리 쪽을 비웃는 듯이 보고 있다. 하지만, 미나토는 여전히 떨리는 다리로 어떻게든 일어서서, 남자 쪽을 똑바로 응시했다."},
+ {n:"……그래. 그거면 돼. 망설이면서도 앞으로 돌진하며, 현실에서 눈을 돌리지 않는 당신의 자세를, 저는 높이 사거든요."},
+ {s:"카자마 미나토", t:"절대로, 어떻게든 해보이겠습니다. 제, 의뢰니까요."},
+ {s:"츠키시로 카구야", t:"힘내세요. ……기대하고 있을게요."},
+ {n:"그 말에, 미나토가 이쪽을 돌아본다. 그 눈동자에 깃든, 떨리는 빛. 그것을 『봐』 버린 나는, 나도 모르게 웃음이 흘러나온다."},
+ {n:"자, 그럼. 시대극은 일시 중단. 하지만 막간에, 탐정 활극을 피로해 보죠. 고요해진 무대에, 다시 이야기의 막이 오르는 것이었다."},
+];
+const SPK={
+ "카자마 미나토":{c:"var(--mina)",side:"L"},
+ "미나토":{c:"var(--mina)",side:"L"},
+ "츠키시로 카구야":{c:"var(--kaguya)",side:"R"},
+ "토키토 센리":{c:"var(--toki)",side:"R"},
+ "???":{c:"var(--toki)",side:"R"},
+};
+function spk(n){ return SPK[n]||{c:"#b8c0cc",side:"C"}; }
+const log=document.getElementById('log'),stage=document.getElementById('stage'),hint=document.getElementById('hint');
+let i=0,done=false;
+function el(t,a){const e=document.createElement(t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+function add(n){log.appendChild(n);log.scrollTop=log.scrollHeight;}
+function narr(t){const d=el('div',{class:'narr'});d.appendChild(document.createTextNode(t));add(d);}
+function dlg(name,text){const s=spk(name);const row=el('div',{class:'row '+s.side});const b=el('div',{class:'bubble'});b.style.borderColor=s.c;
+  const nm=el('div',{class:'name'});nm.style.color=s.c;nm.textContent=name;const tx=el('div',{class:'txt'});tx.textContent=text;
+  b.appendChild(nm);b.appendChild(tx);row.appendChild(b);add(row);}
+function rulesBox(o){const d=el('div',{class:'rules'});const tg=el('span',{class:'rtag'});tg.textContent=o.t;d.appendChild(tg);d.appendChild(document.createTextNode(o.b));add(d);}
+function renderStep(s){ if(s.rules)rulesBox(s.rules); else if(s.n!=null)narr(s.n); else dlg(s.s,s.t); }
+function advance(){
+  if(done)return;
+  if(i>=STORY.length){done=true;hint.style.display='none';return;}
+  renderStep(STORY[i]); i++;
+  if(i>=STORY.length){ done=true; hint.style.display='none'; }
+}
+stage.addEventListener('click',e=>{if(e.target.closest('button'))return;advance();});
+advance();
+</script>
+</body>
+</html>
