@@ -93,11 +93,21 @@ function dlg(name,text){const s=spk(name);const row=el('div',{class:'row '+s.sid
   b.appendChild(nm);b.appendChild(tx);row.appendChild(b);add(row);}
 function rulesBox(o){const d=el('div',{class:'rules'});const tg=el('span',{class:'rtag'});tg.textContent=o.t;d.appendChild(tg);d.appendChild(document.createTextNode(o.b));add(d);}
 function renderStep(s){ if(s.rules)rulesBox(s.rules); else if(s.n!=null)narr(s.n); else dlg(s.s,s.t); }
+function showNext(){
+  const warn=el('div',{class:'row C'});const w=el('div',{});
+  w.textContent='⚠️ 진행자(GM)의 별도 지시가 있기 전까지 넘기지 마세요.';
+  w.style.cssText='text-align:center;font-size:12.5px;color:#ffbf7a;background:#2a2114;border:1px solid #5a4a2a;border-radius:10px;padding:9px 14px;max-width:90%;line-height:1.6';
+  warn.appendChild(w);add(warn);
+  const row=el('div',{class:'row C'});const nb=el('button',{});nb.textContent='다음으로 →';
+  nb.style.cssText='margin-top:2px;background:linear-gradient(180deg,#243047,#1a2235);border:1px solid var(--gold);color:var(--gold);font-weight:800;padding:12px 24px;border-radius:11px;cursor:pointer;font-family:inherit;font-size:14px';
+  nb.addEventListener('click',ev=>{ev.stopPropagation();window.location.href='https://anjaeheung.github.io/ep2-aftermath/';});
+  row.appendChild(nb);add(row);
+}
 function advance(){
   if(done)return;
   if(i>=STORY.length){done=true;hint.style.display='none';return;}
   renderStep(STORY[i]); i++;
-  if(i>=STORY.length){ done=true; hint.style.display='none'; }
+  if(i>=STORY.length){ done=true; hint.style.display='none'; showNext(); }
 }
 stage.addEventListener('click',e=>{if(e.target.closest('button'))return;advance();});
 advance();
